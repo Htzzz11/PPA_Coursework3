@@ -39,7 +39,7 @@ public class Simulator {
     }
 
     /**
-     * Run the simulation from its current state for a single generation.
+     * Run the simulation fdrom its current state for a single generation.
      * Iterate over the whole field updating the state of each life form.
      */
     public void simOneGeneration() {
@@ -72,7 +72,7 @@ public class Simulator {
       for (int row = 0; row < field.getDepth(); row++) {
         for (int col = 0; col < field.getWidth(); col++) {
           Location location = new Location(row, col);
-          Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
+          Mycoplasma myco = new Mycoplasma(field, location, Color.DARKRED);
           if (rand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
             cells.add(myco);
           }
