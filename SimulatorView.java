@@ -3,10 +3,12 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.Group; 
 import javafx.scene.layout.BorderPane; 
-import javafx.scene.layout.HBox; 
-import javafx.scene.paint.Color; 
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 /**
  * A graphical view of the simulation grid. The view displays a rectangle for
@@ -22,7 +24,7 @@ public class SimulatorView extends Application {
     public static final int GRID_WIDTH = 100;
     public static final int GRID_HEIGHT = 80;    
     public static final int WIN_WIDTH = 650;
-    public static final int WIN_HEIGHT = 650;  
+    public static final int WIN_HEIGHT = 650;
     
     private static final Color EMPTY_COLOR = Color.WHITE;
 
@@ -30,26 +32,38 @@ public class SimulatorView extends Application {
     private final String POPULATION_PREFIX = "Population: ";
 
     private Label genLabel, population, infoLabel;
-
     private FieldCanvas fieldCanvas;
     private FieldStats stats;
     private Simulator simulator;
 
+
     /**
      * Create a view of the given width and height.
-     * @param height The simulation's height.
-     * @param width  The simulation's width.
+     * @param 'height The simulation's height.
+     * @param 'width  The simulation's width.
      */
     @Override
     public void start(Stage stage) {
                 
         stats = new FieldStats();
         fieldCanvas = new FieldCanvas(WIN_WIDTH - 50, WIN_HEIGHT - 50);
-        fieldCanvas.setScale(GRID_HEIGHT, GRID_WIDTH); 
+        fieldCanvas.setScale(GRID_HEIGHT, GRID_WIDTH);
+
         simulator = new Simulator();
 
         Group root = new Group();
-        
+
+        Button simButton = new Button("Simulate 10 generations");
+        Button resetButton = new Button("Reset simulation");
+
+        simButton.setOnAction(e -> {
+          simulate(10);
+        });
+
+        resetButton.setOnAction(e -> {
+            reset();
+        });
+
         genLabel = new Label(GENERATION_PREFIX);
         infoLabel = new Label("  ");
         population = new Label(POPULATION_PREFIX);
@@ -57,13 +71,17 @@ public class SimulatorView extends Application {
         BorderPane bPane = new BorderPane(); 
         HBox infoPane = new HBox();
         HBox popPane = new HBox();
-        
+        HBox buttonPane = new HBox();
 
+        buttonPane.getChildren().addAll(simButton, resetButton);
         infoPane.setSpacing(10);
         infoPane.getChildren().addAll(genLabel, infoLabel);       
-        popPane.getChildren().addAll(population); 
-        
-        bPane.setTop(infoPane);
+        popPane.getChildren().addAll(population);
+
+        VBox topPane = new VBox();
+        topPane.getChildren().addAll(infoPane, buttonPane);
+
+        bPane.setTop(topPane);
         bPane.setCenter(fieldCanvas);
         bPane.setBottom(population);
         
@@ -73,8 +91,8 @@ public class SimulatorView extends Application {
         stage.setScene(scene);          
         stage.setTitle("Life Simulation");
         updateCanvas(simulator.getGeneration(), simulator.getField());
-        
-        stage.show();     
+
+        stage.show();
     }
 
     /**
@@ -147,7 +165,7 @@ public class SimulatorView extends Application {
         updateCanvas(simulator.getGeneration(), simulator.getField());
     }
     
-    public static void main(String args[]){           
-        launch(args);      
+    public static void main(String args[]){
+        launch(args);
    } 
 }

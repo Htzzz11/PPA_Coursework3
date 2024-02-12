@@ -21,12 +21,12 @@ public abstract class Cell {
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Cell(Field field, Location location, Color col) {
+    public Cell(Field field, Location location, Color color) {
         alive = true;
         nextAlive = false;
         this.field = field;
         setLocation(location);
-        setColor(col);
+        setColor(color);
     }
 
     /**

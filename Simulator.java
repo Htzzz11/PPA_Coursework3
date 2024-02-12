@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class Simulator {
 
-    private static final double MYCOPLASMA_ALIVE_PROB = 0.25;
+    private static final double MYCOPLASMA_ALIVE_PROB = 0.1;
     private List<Cell> cells;
     private Field field;
     private int generation;
@@ -73,10 +73,10 @@ public class Simulator {
         for (int col = 0; col < field.getWidth(); col++) {
           Location location = new Location(row, col);
           Mycoplasma myco = new Mycoplasma(field, location, Color.DARKRED);
+          Rhino rhino = new Rhino(field, location, Color.BLUE);
           if (rand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
             cells.add(myco);
-          }
-          else {
+          } else {
             myco.setDead();
             cells.add(myco);
           }
