@@ -1,4 +1,4 @@
-import javafx.scene.paint.Color; 
+import javafx.scene.paint.Color;
 
 /**
  * A class representing the shared characteristics of all forms of life
@@ -102,4 +102,5 @@ public abstract class Cell {
     protected Field getField() {
         return field;
     }
+
 }
