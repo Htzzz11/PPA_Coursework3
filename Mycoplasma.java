@@ -1,4 +1,6 @@
-import javafx.scene.paint.Color; 
+import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,17 +30,23 @@ public class Mycoplasma extends Cell {
     */
     public void act() {
         List<Cell> neighbours = getField().getLivingNeighbours(getLocation());
+        List<Cell> neighbourMycos = new ArrayList<>();
+        for (Cell cell : neighbours) {
+            if (cell instanceof Mycoplasma) {
+                neighbourMycos.add(cell);
+            }
+        }
         setNextState(false);
         if (isAlive()) {
-            if (neighbours.size() < 2) {
+            if (neighbourMycos.size() < 2) {
                 setNextState(false);
-            } else if (neighbours.size() == 2 || neighbours.size() == 3) {
+            } else if (neighbourMycos.size() == 2 || neighbourMycos.size() == 3) {
                 setNextState(true);
-            } else if (neighbours.size() > 3) {
+            } else if (neighbourMycos.size() > 3) {
                 setNextState(false);
             }
         } else {
-            if (neighbours.size() == 3) {
+            if (neighbourMycos.size() == 3) {
                 setNextState(true);
             }
         }

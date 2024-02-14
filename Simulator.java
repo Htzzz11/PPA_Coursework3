@@ -15,7 +15,9 @@ import java.util.Random;
 
 public class Simulator {
 
-    private static final double MYCOPLASMA_ALIVE_PROB = 0.1;
+    private static final double MYCOPLASMA_ALIVE_PROB = 0.25;
+    private static final double Mycoplasma_Creation_Prob = 0.5;
+    private static final double Xenofungus_Creation_Prob = 0.05;
     private List<Cell> cells;
     private Field field;
     private int generation;
@@ -72,13 +74,12 @@ public class Simulator {
       for (int row = 0; row < field.getDepth(); row++) {
         for (int col = 0; col < field.getWidth(); col++) {
           Location location = new Location(row, col);
-          Mycoplasma myco = new Mycoplasma(field, location, Color.DARKRED);
-          Rhino rhino = new Rhino(field, location, Color.BLUE);
-          if (rand.nextDouble() <= MYCOPLASMA_ALIVE_PROB) {
-            cells.add(myco);
-          } else {
-            myco.setDead();
-            cells.add(myco);
+          if (rand.nextDouble() <= Mycoplasma_Creation_Prob) {
+              Mycoplasma myco = new Mycoplasma(field, location, Color.BLUE);
+              cells.add(myco);
+          } else if (rand.nextDouble() <= Xenofungus_Creation_Prob) {
+              Xenofungus xeno = new Xenofungus(field, location, Color.RED);
+              cells.add(xeno);
           }
         }
       }

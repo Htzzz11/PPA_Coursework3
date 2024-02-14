@@ -148,13 +148,15 @@ public class Field {
 
         for (Location loc : adjLocations) {
           Cell cell = field[loc.getRow()][loc.getCol()];
-          if (cell.isAlive())
+          if (cell != null && cell.isAlive())
             neighbours.add(cell);
         }
         Collections.shuffle(neighbours, rand);
       }
       return neighbours;
     }
+
+
 
     /**
      * Return the depth of the field.
