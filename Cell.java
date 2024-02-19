@@ -17,6 +17,7 @@ public abstract class Cell {
     private Location location;
     private Color color = Color.WHITE;
     protected List<Cell> neighbours;
+    private int age;
 
     /**
      * Create a new cell at location in field.
@@ -108,6 +109,9 @@ public abstract class Cell {
 
     protected List<Cell> getLivingNeighbours() {
         return field.getLivingNeighbours(location);
+    }
+    protected void setAge(int i) {
+        age = i;
     }
 
 }

@@ -8,8 +8,13 @@ public class Xenofungus extends Cell{
     private int age;
     public Xenofungus(Field field, Location location, Color color) {
         super(field, location, color);
+        age = 0;
     }
 
+    /**
+     * Takes a random adjacent dead Xenofungus and brings it back to life with age = 0.
+     * @param location Xenofungus's location
+     */
     private void revive(Location location) {
         List<Location> adjacentLocations = getField().adjacentLocations(location);
         List<Location> availableLocation = new ArrayList<>();
@@ -23,11 +28,12 @@ public class Xenofungus extends Cell{
             Random random = new Random();
             Location randomAvailableLocation = availableLocation.get(random.nextInt(availableLocation.size()));
             Cell xeno = getField().getObjectAt(randomAvailableLocation);
-            xeno.setColor(Color.GREEN);
             xeno.setNextState(true);
+            xeno.setAge(0);
         }
     }
 
+    // Returns a list of adjacent living Xenofungus
     private List<Cell> getNeighbourLivingXeno() {
         neighbours = getLivingNeighbours();
         List<Cell> neighboursXeno = new ArrayList<>();
@@ -42,9 +48,12 @@ public class Xenofungus extends Cell{
     public void act() {
         List<Cell> neighbourXeno = getNeighbourLivingXeno();
         if (isAlive()) {
-            if (neighbourXeno.size() == 1) {
+            age++;
+            if (neighbourXeno.size() <= 2) {
                 revive(getLocation());
-                age++;
+            }
+            if (age >= 5) {
+                setColor(Color.GREEN);
             }
         }
         if (age > max_age) {

@@ -1,5 +1,4 @@
 import javafx.scene.paint.Color;
-import java.util.List;
 
 /**
  * Simplest form of life.

@@ -15,10 +15,10 @@ import java.util.Random;
 
 public class Simulator {
 
-    private static final double Mycoplasma_Creation_Prob = 0.4;
+    private static final double Mycoplasma_Creation_Prob = 0.5;
     private static final double MYCOPLASMA_ALIVE_PROB = 0.3;
-    private static final double Xenofungus_Creation_Prob = 0.8;
-    private static final double Xenofungus_Alive_Prob =0.4;
+    private static final double Xenofungus_Creation_Prob = 0.75;
+    private static final double Xenofungus_Alive_Prob =0.3;
     private List<Cell> cells;
     private Field field;
     private int generation;
