@@ -6,9 +6,11 @@ import java.util.Random;
 public class Xenofungus extends Cell{
     private static final int max_age = 10;
     private int age;
+    private boolean beParasitized;
     public Xenofungus(Field field, Location location, Color color) {
         super(field, location, color);
         age = 0;
+        beParasitized = false;
     }
 
     /**
@@ -33,6 +35,8 @@ public class Xenofungus extends Cell{
         }
     }
 
+
+
     // Returns a list of adjacent living Xenofungus
     private List<Cell> getNeighbourLivingXeno() {
         neighbours = getLivingNeighbours();
@@ -44,6 +48,15 @@ public class Xenofungus extends Cell{
         }
         return neighboursXeno;
     }
+    public void beParasitized(){
+        beParasitized = true;
+        age *= 2;
+    }
+    public boolean parasiticState(){
+        return beParasitized;
+    }
+
+
 
     public void act() {
         List<Cell> neighbourXeno = getNeighbourLivingXeno();
@@ -58,6 +71,6 @@ public class Xenofungus extends Cell{
         }
         if (age > max_age) {
             setNextState(false);
+            }
         }
     }
-}

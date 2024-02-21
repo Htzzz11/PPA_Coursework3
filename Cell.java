@@ -1,5 +1,6 @@
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,5 +114,17 @@ public abstract class Cell {
     protected void setAge(int i) {
         age = i;
     }
+    protected ArrayList<Location> getAvailableLocation(){
+        ArrayList<Location> availableLocation = new ArrayList<>();
+        neighbours = getLivingNeighbours();
+        for(Cell location : neighbours){
+            if(!location.alive || location.equals(null)){
+                availableLocation.add(location.getLocation());
+            }
+        }
+        return availableLocation;
+    }
+
+
 
 }

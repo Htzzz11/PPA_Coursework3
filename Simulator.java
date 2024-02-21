@@ -19,6 +19,8 @@ public class Simulator {
     private static final double MYCOPLASMA_ALIVE_PROB = 0.3;
     private static final double Xenofungus_Creation_Prob = 0.75;
     private static final double Xenofungus_Alive_Prob =0.3;
+    private static final double Yeast_Creation_Prob = 0.3;
+    private static final double Yeast_Alive_Prob = 0.7;
     private List<Cell> cells;
     private Field field;
     private int generation;
@@ -88,6 +90,13 @@ public class Simulator {
                       xeno.setDead();
                   }
               }
+                  else if (rand.nextDouble()<=Yeast_Creation_Prob){
+                      Yeast yeast = new Yeast(field, location, Color.BLACK);
+                      cells.add(yeast);
+                      if (rand.nextDouble()>=Yeast_Alive_Prob)
+                          yeast.setDead();
+                  }
+
         }
       }
     }
