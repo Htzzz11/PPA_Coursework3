@@ -1,7 +1,6 @@
-import javafx.scene.paint.Color; 
-import java.util.ArrayList;
+import javafx.scene.paint.Color;
+
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 
 
@@ -21,7 +20,7 @@ public class Simulator {
     private static final double Xenofungus_Alive_Prob =0.3;
     private static final double Yeast_Creation_Prob = 0.3;
     private static final double Yeast_Alive_Prob = 0.7;
-    private List<Cell> cells;
+    private Cell[][] cells;
     private Field field;
     private int generation;
 
@@ -38,8 +37,8 @@ public class Simulator {
      * @param width Width of the field. Must be greater than zero.
      */
     public Simulator(int depth, int width) {
-        cells = new ArrayList<>();
         field = new Field(depth, width);
+        cells = field.getAllCell();
         reset();
     }
 
@@ -49,14 +48,20 @@ public class Simulator {
      */
     public void simOneGeneration() {
         generation++;
-        for (Iterator<Cell> it = cells.iterator(); it.hasNext(); ) {
-            Cell cell = it.next();
-            cell.act();
+        for (Cell[] cell : cells) {
+            for(Cell cell1 : cell){
+                if(cell1 != null)
+                    cell1.act();
+            }
         }
 
-        for (Cell cell : cells) {
-          cell.updateState();
+        for (Cell[] cell : cells) {
+            for(Cell cell1 : cell){
+                if(cell1 != null)
+                    cell1.updateState();
         }
+        }
+
     }
 
     /**
@@ -64,7 +69,11 @@ public class Simulator {
      */
     public void reset() {
         generation = 0;
-        cells.clear();
+        for (Cell[] cell : cells) {
+            for(Cell cell1 : cell){
+                cell1 = null;
+            }
+        }
         populate();
     }
 
@@ -79,20 +88,20 @@ public class Simulator {
           Location location = new Location(row, col);
               if (rand.nextDouble() <= Mycoplasma_Creation_Prob) {
                   Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
-                  cells.add(myco);
+                  cells[row][col]=myco;
                   if (rand.nextDouble() >= MYCOPLASMA_ALIVE_PROB) {
                       myco.setDead();
                   }
               } else if (rand.nextDouble() <= Xenofungus_Creation_Prob) {
                   Xenofungus xeno = new Xenofungus(field, location, Color.BLUE);
-                  cells.add(xeno);
+                  cells[row][col]=xeno;
                   if (rand.nextDouble() >= Xenofungus_Alive_Prob) {
                       xeno.setDead();
                   }
               }
                   else if (rand.nextDouble()<=Yeast_Creation_Prob){
                       Yeast yeast = new Yeast(field, location, Color.BLACK);
-                      cells.add(yeast);
+                      cells[row][col]=yeast;
                       if (rand.nextDouble()>=Yeast_Alive_Prob)
                           yeast.setDead();
                   }

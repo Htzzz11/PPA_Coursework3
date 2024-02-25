@@ -60,17 +60,45 @@ public class Xenofungus extends Cell{
 
     public void act() {
         List<Cell> neighbourXeno = getNeighbourLivingXeno();
+
         if (isAlive()) {
             age++;
+            if (age < max_age) {
+                setNextState(true);
+            }
             if (neighbourXeno.size() <= 2) {
                 revive(getLocation());
             }
             if (age >= 5) {
                 setColor(Color.GREEN);
             }
+            if(age > 10)
+                setNextState(false);
         }
-        if (age > max_age) {
-            setNextState(false);
+
+        breed();
+        }
+    public void breed(){
+        Random random = new Random();
+        ArrayList<Location> adjXenoLocation = getAdjXenoLocation();
+        for(Location location : adjXenoLocation){
+            if(!getField().getObjectAt(location).isAlive()){
+                getField().place(new Yeast(getField(),getLocation(),Color.BROWN),location);
+                ArrayList<Location> availableLocation = getAvailableLocation();
+                if(!availableLocation.isEmpty())
+                    getField().place(new Yeast(getField(),getLocation(),Color.BROWN),availableLocation.get(random.nextInt(availableLocation.size())));
             }
         }
+    }
+    private ArrayList<Location> getAdjXenoLocation(){
+        List<Location> adjacentLocations = getField().adjacentLocations(getLocation());
+        List<Location> availableParasitizeLocation = new ArrayList<>();
+        for (Location locations: adjacentLocations) {
+            Cell cell = getField().getObjectAt(locations);
+            if (cell instanceof Xenofungus) {
+                availableParasitizeLocation.add(locations);
+            }
+        }
+        return (ArrayList<Location>) availableParasitizeLocation;
+    }
     }

@@ -173,4 +173,8 @@ public class Field {
     public int getWidth() {
         return width;
     }
+
+    public Cell[][] getAllCell() {
+        return field;
+    }
 }

@@ -9,21 +9,23 @@ public class Yeast extends Cell{
             super(field, location, color);
     }
     public void act() {
-        breed();
+        setNextState(true);
+        ArrayList<Location> availableParasitizeLocation = getAdjXenoLocation();
         if(isAlive())
-            parasitize();
+            if(availableParasitizeLocation.isEmpty()){
+                setNextState(false);
+            }else {
+                Random rand = new Random();
+                Xenofungus x = (Xenofungus) getField().getObjectAt(availableParasitizeLocation.get(rand.nextInt(availableParasitizeLocation.size())));
+                x.beParasitized();
+                getField().clear(getLocation());
+            }
+
     }
     // 如果周围有Xeno 的话当前位置设为空 随机寄生周围的Xeno 被寄生的Xeno设为被寄生状态
     public void parasitize(){
-            ArrayList<Location> availableParasitizeLocation = getAdjXenoLocation();
-            if(availableParasitizeLocation.isEmpty()){
-                setDead();
-            }else {
-            Random rand = new Random();
-            Xenofungus x = (Xenofungus) getField().getObjectAt(availableParasitizeLocation.get(rand.nextInt(availableParasitizeLocation.size())));
-            x.beParasitized();
-            getField().clear(getLocation());
-            }
+
+
         }
         // return Adjecent location of Xenofungus
     private ArrayList<Location> getAdjXenoLocation(){
@@ -38,17 +40,6 @@ public class Yeast extends Cell{
             return (ArrayList<Location>) availableParasitizeLocation;
         }
         // 如果宿主死了的话 宿主所在的位置变成Yeast 并且在周围找一个空位繁殖一个 繁殖的为棕色
-    public void breed(){
-        Random random = new Random();
-        ArrayList<Location> adjXenoLocation = getAdjXenoLocation();
-        for(Location location : adjXenoLocation){
-            if(!getField().getObjectAt(location).isAlive()){
-                getField().place(new Yeast(getField(),getLocation(),Color.BROWN),location);
-                ArrayList<Location> availableLocation = getAvailableLocation();
-                if(!availableLocation.isEmpty())
-                getField().place(new Yeast(getField(),getLocation(),Color.BROWN),availableLocation.get(random.nextInt(availableLocation.size())));
-            }
-        }
-    }
+
 }
 
