@@ -49,7 +49,7 @@ public class SimulatorView extends Application {
         fieldCanvas = new FieldCanvas(WIN_WIDTH - 50, WIN_HEIGHT - 50);
         fieldCanvas.setScale(GRID_HEIGHT, GRID_WIDTH);
 
-        simulator = new Simulator();
+        simulator = new Simulator(200,200);
 
         Group root = new Group();
 

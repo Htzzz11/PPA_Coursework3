@@ -10,21 +10,20 @@ public class Yeast extends Cell{
     }
     public void act() {
         setNextState(true);
-        ArrayList<Location> availableParasitizeLocation = getAdjXenoLocation();
-        if(isAlive())
-            if(availableParasitizeLocation.isEmpty()){
+        ArrayList<Location> availableParasiteLocation = getAdjXenoLocation();
+        if(isAlive()) {
+            if (availableParasiteLocation.isEmpty()) {
                 setNextState(false);
-            }else {
+            } else {
                 Random rand = new Random();
-                Xenofungus x = (Xenofungus) getField().getObjectAt(availableParasitizeLocation.get(rand.nextInt(availableParasitizeLocation.size())));
+                Xenofungus x = (Xenofungus) getField().getObjectAt(availableParasiteLocation.get(rand.nextInt(availableParasiteLocation.size())));
                 x.beParasitized();
                 getField().clear(getLocation());
             }
-
+        }
     }
     // 如果周围有Xeno 的话当前位置设为空 随机寄生周围的Xeno 被寄生的Xeno设为被寄生状态
     public void parasitize(){
-
 
         }
         // return Adjecent location of Xenofungus

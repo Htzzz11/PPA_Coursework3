@@ -43,7 +43,7 @@ public class Simulator {
     }
 
     /**
-     * Run the simulation fdrom its current state for a single generation.
+     * Run the simulation from its current state for a single generation.
      * Iterate over the whole field updating the state of each life form.
      */
     public void simOneGeneration() {

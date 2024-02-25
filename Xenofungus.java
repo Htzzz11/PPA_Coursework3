@@ -6,11 +6,11 @@ import java.util.Random;
 public class Xenofungus extends Cell{
     private static final int max_age = 10;
     private int age;
-    private boolean beParasitized;
+    private boolean parasited;
     public Xenofungus(Field field, Location location, Color color) {
         super(field, location, color);
         age = 0;
-        beParasitized = false;
+        parasited = false;
     }
 
     /**
@@ -48,12 +48,12 @@ public class Xenofungus extends Cell{
         }
         return neighboursXeno;
     }
-    public void beParasitized(){
-        beParasitized = true;
+    public void beParasitized() {
+        parasited = true;
         age *= 2;
     }
-    public boolean parasiticState(){
-        return beParasitized;
+    public boolean parasiticState() {
+        return parasited;
     }
 
 
@@ -63,6 +63,7 @@ public class Xenofungus extends Cell{
 
         if (isAlive()) {
             age++;
+            reproduce();
             if (age < max_age) {
                 setNextState(true);
             }
@@ -72,13 +73,12 @@ public class Xenofungus extends Cell{
             if (age >= 5) {
                 setColor(Color.GREEN);
             }
-            if(age > 10)
+            if(age > 10) {
                 setNextState(false);
+            }
         }
-
-        breed();
-        }
-    public void breed(){
+    }
+    public void reproduce(){
         Random random = new Random();
         ArrayList<Location> adjXenoLocation = getAdjXenoLocation();
         for(Location location : adjXenoLocation){
