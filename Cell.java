@@ -111,9 +111,12 @@ public abstract class Cell {
     protected List<Cell> getLivingNeighbours() {
         return field.getLivingNeighbours(location);
     }
+
     protected void setAge(int i) {
         age = i;
     }
+
+    //Returns an Arraylist of adjacent locations that have dead or no cells
     protected ArrayList<Location> getAvailableLocation(){
         ArrayList<Location> availableLocation = new ArrayList<>();
         neighbours = getLivingNeighbours();
@@ -124,7 +127,4 @@ public abstract class Cell {
         }
         return availableLocation;
     }
-
-
-
 }

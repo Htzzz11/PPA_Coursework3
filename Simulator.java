@@ -18,7 +18,7 @@ public class Simulator {
     private static final double MYCOPLASMA_ALIVE_PROB = 0.3;
     private static final double Xenofungus_Creation_Prob = 0.75;
     private static final double Xenofungus_Alive_Prob =0.3;
-    private static final double Yeast_Creation_Prob = 0.3;
+    private static final double Yeast_Creation_Prob = 0.5;
     private static final double Yeast_Alive_Prob = 0.7;
     private static final double Chromafire_Creation_Prob = 0.5;
     private static final double Chromafire_Alive_Prob = 0.7;
@@ -61,9 +61,8 @@ public class Simulator {
             for(Cell cell1 : cell){
                 if(cell1 != null)
                     cell1.updateState();
+            }
         }
-        }
-
     }
 
     /**
@@ -83,34 +82,38 @@ public class Simulator {
      * Randomly populate the field live/dead life forms
      */
     private void populate() {
-      Random rand = Randomizer.getRandom();
-      field.clear();
-      for (int row = 0; row < field.getDepth(); row++) {
-        for (int col = 0; col < field.getWidth(); col++) {
-          Location location = new Location(row, col);
-              if (rand.nextDouble() <= Mycoplasma_Creation_Prob) {
-                  Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
-                  cells[row][col]=myco;
-                  if (rand.nextDouble() >= MYCOPLASMA_ALIVE_PROB) {
-                      myco.setDead();
-                  }
-              }
-                  else if (rand.nextDouble()<=Yeast_Creation_Prob){
-                      Yeast yeast = new Yeast(field, location, Color.BLACK);
-                      cells[row][col]=yeast;
-                      if (rand.nextDouble()>=Yeast_Alive_Prob) {
-                          yeast.setDead();
-                      }
-                  }
-              else if (rand.nextDouble()<=Chromafire_Creation_Prob) {
-                  Chromafire chromafire = new Chromafire(field, location, Color.PINK);
-                  cells[row][col]=chromafire;
-                  if (rand.nextDouble()>=Yeast_Alive_Prob) {
-                      chromafire.setDead();
-                  }
-              }
+        Random rand = Randomizer.getRandom();
+        field.clear();
+        for (int row = 0; row < field.getDepth(); row++) {
+            for (int col = 0; col < field.getWidth(); col++) {
+                Location location = new Location(row, col);
+                if (rand.nextDouble() <= Mycoplasma_Creation_Prob) {
+                    Mycoplasma myco = new Mycoplasma(field, location, Color.ORANGE);
+                    cells[row][col] = myco;
+                    if (rand.nextDouble() >= MYCOPLASMA_ALIVE_PROB) {
+                        myco.setDead();
+                    }
+                } else if (rand.nextDouble() <= Xenofungus_Creation_Prob) {
+                    Xenofungus xeno = new Xenofungus(field, location, Color.GREEN);
+                    cells[row][col] = xeno;
+                    if (rand.nextDouble() >= Xenofungus_Alive_Prob) {
+                        xeno.setDead();
+                    }
+                } else if (rand.nextDouble() <= Yeast_Creation_Prob) {
+                    Yeast yeast = new Yeast(field, location, Color.BLACK);
+                    cells[row][col] = yeast;
+                    if (rand.nextDouble() >= Yeast_Alive_Prob) {
+                        yeast.setDead();
+                    }
+                } else if (rand.nextDouble() <= Chromafire_Creation_Prob) {
+                    Chromafire chromafire = new Chromafire(field, location, Color.BLUE);
+                    cells[row][col] = chromafire;
+                    if (rand.nextDouble() >= Chromafire_Alive_Prob) {
+                        chromafire.setDead();
+                    }
+                }
+            }
         }
-      }
     }
 
     /**

@@ -156,8 +156,6 @@ public class Field {
       return neighbours;
     }
 
-
-
     /**
      * Return the depth of the field.
      * @return The depth of the field.
