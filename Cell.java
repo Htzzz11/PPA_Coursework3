@@ -19,6 +19,7 @@ public abstract class Cell {
     private Color color = Color.WHITE;
     protected List<Cell> neighbours;
     private int age;
+    private boolean isInfected;
 
     /**
      * Create a new cell at location in field.
@@ -29,6 +30,7 @@ public abstract class Cell {
     public Cell(Field field, Location location, Color color) {
         alive = true;
         nextAlive = false;
+        age = 0;
         this.field = field;
         setLocation(location);
         setColor(color);
@@ -111,6 +113,7 @@ public abstract class Cell {
     protected List<Cell> getLivingNeighbours() {
         return field.getLivingNeighbours(location);
     }
+
     protected void setAge(int i) {
         age = i;
     }
@@ -127,4 +130,31 @@ public abstract class Cell {
 
 
 
+    protected int getAge() {
+        return age;
+    }
+
+    protected void incrementAge() {
+        age++;
+    }
+
+    //Returns an Arraylist of adjacent locations that have dead or no cells
+    protected ArrayList<Location> getAvailableLocation(){
+        ArrayList<Location> availableLocation = new ArrayList<>();
+        neighbours = getLivingNeighbours();
+        for(Cell location : neighbours){
+            if(!location.alive || location.equals(null)){
+                availableLocation.add(location.getLocation());
+            }
+        }
+        return availableLocation;
+    }
+
+    protected void getInfected() {
+        isInfected = true;
+    }
+
+    protected boolean isInfected() {
+        return isInfected;
+    }
 }

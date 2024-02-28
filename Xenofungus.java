@@ -3,39 +3,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Implementation of life Xenofungus.
+ * Xenofungus' two major behaviours are revive adjacent cells and have a chance to develop disease and spread it.
+ */
 public class Xenofungus extends Cell{
     private static final int max_age = 10;
-    private int age;
-    private boolean parasited;
+    private Disease disease;
     public Xenofungus(Field field, Location location, Color color) {
         super(field, location, color);
-        age = 0;
-        parasited = false;
     }
 
     /**
-     * Takes a random adjacent dead Xenofungus and brings it back to life with age = 0.
+     * Revives all adjacent Xenofungus and sets their age to 0.
      * @param location Xenofungus's location
      */
     private void revive(Location location) {
         List<Location> adjacentLocations = getField().adjacentLocations(location);
-        List<Location> availableLocation = new ArrayList<>();
+        List<Location> reviveLocation = new ArrayList<>();
         for (Location locations: adjacentLocations) {
             Cell cell = getField().getObjectAt(locations);
-            if (cell instanceof Xenofungus && !cell.isAlive()) {
-                availableLocation.add(locations);
+            if (cell != null && !cell.isAlive()) {
+                reviveLocation.add(locations);
             }
         }
-        if (!availableLocation.isEmpty()) {
-            Random random = new Random();
-            Location randomAvailableLocation = availableLocation.get(random.nextInt(availableLocation.size()));
-            Cell xeno = getField().getObjectAt(randomAvailableLocation);
-            xeno.setNextState(true);
-            xeno.setAge(0);
+        if (!reviveLocation.isEmpty()) {
+            for (Location location1 : reviveLocation) {
+                Cell cell = getField().getObjectAt(location1);
+                cell.setNextState(true);
+                cell.setAge(0);
+            }
         }
     }
-
-
 
     // Returns a list of adjacent living Xenofungus
     private List<Cell> getNeighbourLivingXeno() {
@@ -48,57 +47,32 @@ public class Xenofungus extends Cell{
         }
         return neighboursXeno;
     }
-    public void beParasitized() {
-        parasited = true;
-        age *= 2;
-    }
-    public boolean parasiticState() {
-        return parasited;
-    }
-
-
 
     public void act() {
         List<Cell> neighbourXeno = getNeighbourLivingXeno();
-
         if (isAlive()) {
-            age++;
-            reproduce();
-            if (age < max_age) {
-                setNextState(true);
+            incrementAge();
+            if (getAge() < max_age) setNextState(true);
+            if (getAge() <= 5) {
+                if (neighbourXeno.size() <= 3) revive(getLocation());
+            } else {
+                setColor(Color.DARKGREEN);
+                Random random = new Random();
+                int randomInt = random.nextInt(4);
+                switch (randomInt) {
+                    case 0:
+                        getInfected();
+                        disease.spreadDisease(getField().getObjectAt(getLocation()));
+                        break;
+                    case 1:
+                        setNextState(false);
+                        break;
+                    default:
+                        revive(getLocation());
+                        break;
+                }
             }
-            if (neighbourXeno.size() <= 2) {
-                revive(getLocation());
-            }
-            if (age >= 5) {
-                setColor(Color.GREEN);
-            }
-            if(age > 10) {
-                setNextState(false);
-            }
+            if (getAge() > 10) setNextState(false);
         }
     }
-    public void reproduce(){
-        Random random = new Random();
-        ArrayList<Location> adjXenoLocation = getAdjXenoLocation();
-        for(Location location : adjXenoLocation){
-            if(!getField().getObjectAt(location).isAlive()){
-                getField().place(new Yeast(getField(),getLocation(),Color.BROWN),location);
-                ArrayList<Location> availableLocation = getAvailableLocation();
-                if(!availableLocation.isEmpty())
-                    getField().place(new Yeast(getField(),getLocation(),Color.BROWN),availableLocation.get(random.nextInt(availableLocation.size())));
-            }
-        }
-    }
-    private ArrayList<Location> getAdjXenoLocation(){
-        List<Location> adjacentLocations = getField().adjacentLocations(getLocation());
-        List<Location> availableParasitizeLocation = new ArrayList<>();
-        for (Location locations: adjacentLocations) {
-            Cell cell = getField().getObjectAt(locations);
-            if (cell instanceof Xenofungus) {
-                availableParasitizeLocation.add(locations);
-            }
-        }
-        return (ArrayList<Location>) availableParasitizeLocation;
-    }
-    }
+}

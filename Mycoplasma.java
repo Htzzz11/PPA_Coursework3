@@ -27,13 +27,12 @@ public class Mycoplasma extends Cell {
     */
     public void act() {
         neighbours = getLivingNeighbours();
-        setNextState(false);
         if (isAlive()) {
             if (neighbours.size() < 2) {
                 setNextState(false);
             } else if (neighbours.size() == 2 || neighbours.size() == 3) {
                 setNextState(true);
-            } else if (neighbours.size() > 3) {
+            } else {
                 setNextState(false);
             }
         } else {
