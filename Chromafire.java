@@ -10,18 +10,20 @@ public class Chromafire extends Cell{
         super(field, location, color);
         isParasitized = false;
     }
-    @Override
-    //如果大于三个的话繁殖 如果小于两个的话直接死
+    /* If number of  living Chromafire neighbour less than 2 it will dead
+       If more than 3 it will reporduce
+       If Chromafire is dead and it getting parasitied it will let Yeast breed
+    */
     public void act() {
         neighbours = getLivingNeighbours();
         if(isAlive()){
             incrementAge();
             if (getAge() < Max_Age) {
                 setNextState(true);
-                if(neighbours.size() < 2) {
+                if (neighbours.size() < 2) {
                     setNextState(false);
                 }
-                if(neighbours.size() > 3) {
+                if (neighbours.size() > 3) {
                     reproduce();
                 }
             }
@@ -30,25 +32,28 @@ public class Chromafire extends Cell{
             }
         }
         else {
-            checkYeastBreed();
+            YeastBreed();
         }
     }
-    public void checkYeastBreed() {
+    // Yeast would breed on available neighbor
+    public void YeastBreed() {
         Random random = new Random();
         List<Location> adjCfoLocation = getAdjChromaLocation();
         for (Location location : adjCfoLocation) {
             if (isParasitized) {
-                getField().place(new Yeast(getField(), getLocation(), Color.RED), location);
+                Yeast yeast = new Yeast(getField(), getLocation(), Color.RED);
+                getField().place(yeast, location);
                 ArrayList<Location> availableLocation = getAvailableLocation();
                 if (!availableLocation.isEmpty()) {
-                    getField().place(new Yeast(getField(), getLocation(), Color.RED), availableLocation.get(random.nextInt(availableLocation.size())));
+                    getField().place(yeast, availableLocation.get(random.nextInt(availableLocation.size())));
                 }
                 if (!availableLocation.isEmpty()) {
-                    getField().place(new Yeast(getField(), getLocation(), Color.RED), availableLocation.get(random.nextInt(availableLocation.size())));
+                    getField().place(yeast, availableLocation.get(random.nextInt(availableLocation.size())));
                 }
             }
         }
     }
+    // return a list of adjacent chromafire location
     private List<Location> getAdjChromaLocation() {
         List<Location> adjacentLocations = getField().adjacentLocations(getLocation());
         List<Location> availableParasitizeLocation = new ArrayList<>();
@@ -60,6 +65,7 @@ public class Chromafire extends Cell{
         }
         return availableParasitizeLocation;
     }
+    // methord of reproduce
     private void reproduce() {
         Random random = new Random();
         ArrayList<Location> availableLocation = getAvailableLocation();

@@ -83,7 +83,7 @@ public class Xenofungus extends Cell{
             } else {
                 setColor(Color.DARKGREEN);
             }
-            if (getAge() > 10) setNextState(false);
+            if (getAge() >= 10) setNextState(false);
         }
     }
 }

@@ -9,9 +9,11 @@ public class Yeast extends Cell {
         super(field, location, color);
     }
 
-    // 如果周围有Xeno 的话当前位置设为空 随机寄生周围的Xeno 被寄生的Xeno设为被寄生状态
+    /* If there is Chromafire nearby. it will paratize to it, so that null is putting at current location  
+       else it will dead.
+    */
     public void act() {
-        List<Location> availableParasitizeLocation = getAdjCfLocation();
+        List<Location> availableParasitizeLocation = getAdjChromaLocation();
         if (isAlive()) {
             if (availableParasitizeLocation.isEmpty()) {
                 setNextState(false);
@@ -26,7 +28,7 @@ public class Yeast extends Cell {
     }
 
     // Returns a List of adjacent Chromafire
-    private List<Location> getAdjCfLocation() {
+    private List<Location> getAdjChromaLocation() {
         List<Location> adjacentLocations = getField().adjacentLocations(getLocation());
         List<Location> availableParasitizeLocation = new ArrayList<>();
         for (Location locations : adjacentLocations) {
