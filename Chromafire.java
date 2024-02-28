@@ -10,15 +10,14 @@ public class Chromafire extends Cell{
     public Chromafire(Field field, Location location, Color color) {
         super(field, location, color);
         isParasitized = false;
-        age = 0;
     }
     @Override
     //如果大于三个的话繁殖 如果小于两个的话直接死
     public void act() {
         neighbours = getLivingNeighbours();
         if(isAlive()){
-            age++;
-            if (age < Max_Age) {
+            incrementAge();
+            if (getAge() < Max_Age) {
                 setNextState(true);
                 if(neighbours.size() < 2) {
                     setNextState(false);
