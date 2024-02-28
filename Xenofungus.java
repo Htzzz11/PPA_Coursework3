@@ -12,6 +12,7 @@ public class Xenofungus extends Cell{
     private Disease disease;
     public Xenofungus(Field field, Location location, Color color) {
         super(field, location, color);
+        disease = new Disease();
     }
 
     /**
@@ -52,25 +53,29 @@ public class Xenofungus extends Cell{
         List<Cell> neighbourXeno = getNeighbourLivingXeno();
         if (isAlive()) {
             incrementAge();
-            if (getAge() < max_age) setNextState(true);
-            if (getAge() <= 5) {
-                if (neighbourXeno.size() <= 3) revive(getLocation());
+            if (!isInfected()) {
+                if (getAge() < max_age) setNextState(true);
+                if (getAge() <= 5) {
+                    if (neighbourXeno.size() <= 3) revive(getLocation());
+                } else {
+                    setColor(Color.GREEN);
+                    Random random = new Random();
+                    int randomInt = random.nextInt(6);
+                    switch (randomInt) {
+                        case 0:
+                            getInfected();
+                            disease.spreadDisease(getField().getObjectAt(getLocation()));
+                            break;
+                        case 1:
+                            setNextState(false);
+                            break;
+                        default:
+                            revive(getLocation());
+                            break;
+                    }
+                }
             } else {
                 setColor(Color.DARKGREEN);
-                Random random = new Random();
-                int randomInt = random.nextInt(4);
-                switch (randomInt) {
-                    case 0:
-                        getInfected();
-                        disease.spreadDisease(getField().getObjectAt(getLocation()));
-                        break;
-                    case 1:
-                        setNextState(false);
-                        break;
-                    default:
-                        revive(getLocation());
-                        break;
-                }
             }
             if (getAge() > 10) setNextState(false);
         }

@@ -32,6 +32,7 @@ public abstract class Cell {
         nextAlive = false;
         age = 0;
         this.field = field;
+        isInfected = false;
         setLocation(location);
         setColor(color);
     }
@@ -139,16 +140,6 @@ public abstract class Cell {
     }
 
     //Returns an Arraylist of adjacent locations that have dead or no cells
-    protected ArrayList<Location> getAvailableLocation(){
-        ArrayList<Location> availableLocation = new ArrayList<>();
-        neighbours = getLivingNeighbours();
-        for(Cell location : neighbours){
-            if(!location.alive || location.equals(null)){
-                availableLocation.add(location.getLocation());
-            }
-        }
-        return availableLocation;
-    }
 
     protected void getInfected() {
         isInfected = true;

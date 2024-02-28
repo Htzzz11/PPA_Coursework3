@@ -94,7 +94,7 @@ public class Simulator {
                         myco.setDead();
                     }
                 } else if (rand.nextDouble() <= Xenofungus_Creation_Prob) {
-                    Xenofungus xeno = new Xenofungus(field, location, Color.GREEN);
+                    Xenofungus xeno = new Xenofungus(field, location, Color.LIGHTGREEN);
                     cells[row][col] = xeno;
                     if (rand.nextDouble() >= Xenofungus_Alive_Prob) {
                         xeno.setDead();
