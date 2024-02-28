@@ -70,7 +70,7 @@ public class Chromafire extends Cell{
     }
     public void isParasitized() {
         isParasitized = true;
-        age *= 2;
+        setAge(getAge()*2);
         getField().getObjectAt(getLocation()).setColor(Color.BLUE);
     }
 }
