@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class Chromafire extends Cell{
     private boolean isParasitized;
-    private int age;
     private static final int Max_Age = 5;
     public Chromafire(Field field, Location location, Color color) {
         super(field, location, color);
@@ -36,7 +35,7 @@ public class Chromafire extends Cell{
     }
     public void checkYeastBreed() {
         Random random = new Random();
-        List<Location> adjCfoLocation = getAdjCfLocation();
+        List<Location> adjCfoLocation = getAdjChromaLocation();
         for (Location location : adjCfoLocation) {
             if (isParasitized) {
                 getField().place(new Yeast(getField(), getLocation(), Color.RED), location);
@@ -50,7 +49,7 @@ public class Chromafire extends Cell{
             }
         }
     }
-    private List<Location> getAdjCfLocation() {
+    private List<Location> getAdjChromaLocation() {
         List<Location> adjacentLocations = getField().adjacentLocations(getLocation());
         List<Location> availableParasitizeLocation = new ArrayList<>();
         for (Location locations: adjacentLocations) {
@@ -63,14 +62,16 @@ public class Chromafire extends Cell{
     }
     private void reproduce() {
         Random random = new Random();
-            ArrayList<Location> availableLocation = getAvailableLocation();
-            if(!availableLocation.isEmpty()) {
-                getField().place(new Chromafire(getField(), getLocation(), Color.PINK), availableLocation.get(random.nextInt(availableLocation.size())));
-            }
+        ArrayList<Location> availableLocation = getAvailableLocation();
+        if(!availableLocation.isEmpty()) {
+            Chromafire chroma = (new Chromafire(getField(), getLocation(), Color.LIGHTGREEN));
+            int randomInt = random.nextInt(availableLocation.size());
+            getField().place(chroma,availableLocation.get(randomInt));
+        }
     }
     public void isParasitized() {
         isParasitized = true;
         setAge(getAge()*2);
-        getField().getObjectAt(getLocation()).setColor(Color.BLUE);
+        getField().getObjectAt(getLocation()).setColor(Color.DARKBLUE);
     }
 }

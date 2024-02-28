@@ -9,10 +9,8 @@ import java.util.Random;
  */
 public class Xenofungus extends Cell{
     private static final int max_age = 10;
-    private Disease disease;
     public Xenofungus(Field field, Location location, Color color) {
         super(field, location, color);
-        disease = new Disease();
     }
 
     /**
@@ -33,6 +31,7 @@ public class Xenofungus extends Cell{
                 Cell cell = getField().getObjectAt(location1);
                 cell.setNextState(true);
                 cell.setAge(0);
+                cell.getInfected(false);
             }
         }
     }
@@ -49,6 +48,13 @@ public class Xenofungus extends Cell{
         return neighboursXeno;
     }
 
+    public void spreadDisease(Cell cell) {
+        List<Cell> adjacentLivingXeno = cell.getField().getLivingNeighbours(cell.getLocation());
+        for (Cell cell1 : adjacentLivingXeno) {
+            cell1.getInfected(true);
+        }
+    }
+
     public void act() {
         List<Cell> neighbourXeno = getNeighbourLivingXeno();
         if (isAlive()) {
@@ -63,8 +69,8 @@ public class Xenofungus extends Cell{
                     int randomInt = random.nextInt(6);
                     switch (randomInt) {
                         case 0:
-                            getInfected();
-                            disease.spreadDisease(getField().getObjectAt(getLocation()));
+                            getInfected(true);
+                            spreadDisease(getField().getObjectAt(getLocation()));
                             break;
                         case 1:
                             setNextState(false);

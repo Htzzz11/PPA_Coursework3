@@ -100,7 +100,7 @@ public class Simulator {
                         xeno.setDead();
                     }
                 } else if (rand.nextDouble() <= Yeast_Creation_Prob) {
-                    Yeast yeast = new Yeast(field, location, Color.BLACK);
+                    Yeast yeast = new Yeast(field, location, Color.RED);
                     cells[row][col] = yeast;
                     if (rand.nextDouble() >= Yeast_Alive_Prob) {
                         yeast.setDead();

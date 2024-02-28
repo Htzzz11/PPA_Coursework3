@@ -17,7 +17,8 @@ public class Yeast extends Cell {
                 setNextState(false);
             } else {
                 Random rand = new Random();
-                Chromafire c = (Chromafire) getField().getObjectAt(availableParasitizeLocation.get(rand.nextInt(availableParasitizeLocation.size())));
+                int randomInt = rand.nextInt(availableParasitizeLocation.size());
+                Chromafire c = (Chromafire) getField().getObjectAt(availableParasitizeLocation.get(randomInt));
                 c.isParasitized();
                 getField().clear(getLocation());
             }

@@ -141,8 +141,8 @@ public abstract class Cell {
 
     //Returns an Arraylist of adjacent locations that have dead or no cells
 
-    protected void getInfected() {
-        isInfected = true;
+    protected void getInfected(boolean state) {
+        isInfected = state;
     }
 
     protected boolean isInfected() {
